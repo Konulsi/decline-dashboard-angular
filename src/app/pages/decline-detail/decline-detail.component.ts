@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./decline-detail.component.scss']
 })
 export class DeclineDetailComponent {
-
+  list = [];
 }
