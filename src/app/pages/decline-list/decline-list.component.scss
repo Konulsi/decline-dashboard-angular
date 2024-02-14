@@ -1,0 +1,57 @@
+.wrapper{
+  margin: 30px 100px;
+}
+#floatingSelect{
+  width: 164px;
+height: 56px;
+padding: 8px, 12px, 8px, 12px;
+border-radius: 8px;
+justify-content: space-between;
+opacity: 0.5px;
+
+}
+
+.date-form{
+display: flex;
+justify-content: space-between;
+width: 380px;
+height: 56px;
+gap: 12px;
+
+}
+
+.date{
+  width:204px;
+height: 56px;
+padding: 8px, 12px, 8px, 12px;
+border-radius: 8px;
+gap: 10px;
+}
+
+.datepicker-head {
+  background-color:  #FF6400;
+
+}
+
+.table{
+
+padding: 24px, 0px, 0px, 0px !important;
+
+}
+
+.filterIcon {
+  width: 15px;
+  cursor: pointer;
+}
+
+table th {
+  font-size: 17px;
+  color: #575353 !important;
+  font-weight: bold !important;
+}
+
+.table-rows tr:nth-child(-n + 3) td,
+.table-rows tr:nth-child(-n + 3):hover td {
+  background-color: rgba(255, 100, 0, 0.1);
+  border-bottom: 1px solid #e2e2e2;
+}
