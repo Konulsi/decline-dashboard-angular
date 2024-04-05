@@ -1,0 +1,96 @@
+.wrapper {
+  margin: 30px 100px;
+  color: #222 !important;
+  font-family: "Ubuntu", sans-serif;
+  letter-spacing: 0.3px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.title_main {
+  margin-bottom: 24px;
+}
+.title_main h2 {
+  font-size: 20px;
+  color: #222;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.float-label {
+  position: relative;
+}
+
+.label {
+  font-size: 14px;
+  color: #999;
+  font-weight: 400;
+  position: absolute;
+  pointer-events: none;
+  // left: 12px;
+  top: 35px;
+  transition: 0.2s ease all;
+}
+
+.label-float {
+  // top: 6px;
+  font-size: 10px;
+}
+.date-select-pagination {
+  display: flex;
+  justify-content: space-between;
+}
+
+.date_select {
+  display: flex;
+  justify-content: space-between;
+  width: 380px;
+  gap: 12px;
+}
+
+.date_time {
+  width: 204px;
+  height: 56px;
+  padding: 8px, 12px, 8px, 12px;
+  border-radius: 8px;
+  gap: 10px;
+  background: #f5f5f5;
+  border: none;
+}
+
+.datepicker-head {
+  background-color: #ff6400;
+}
+
+table th {
+  font-size: 17px;
+  color: #575353 !important;
+  font-weight: bold !important;
+  width: 413.33px;
+  height: 64px;
+  background: #e2e2e2;
+  &:first-child {
+    border-top-left-radius: 10px;
+  }
+
+  &:last-child {
+    border-top-right-radius: 10px;
+  }
+}
+
+.table-rows tr {
+  font-size: 17px;
+  color: #575353 !important;
+  font-weight: bold !important;
+  width: 413.33px;
+  height: 64px;
+}
+
+.more-column {
+  outline: none;
+  border: none;
+  background: transparent;
+}
+
+///
+/// ///

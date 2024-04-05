@@ -1,64 +1,72 @@
-<table class="table mt-4">
-  <thead>
-    <tr>
-      <th scope="col">Full Name</th>
-      <th scope="col">Telephone</th>
-      <th scope="col">Merchant Name</th>
-      <th scope="col">Decline Result</th>
-      <th scope="col">Amount</th>
-      <th scope="col">ExtRid</th>
-      <th scope="col">Entry Mode</th>
-      <th scope="col">Currency</th>
-      <th scope="col">Available balance</th>
-      <th scope="col"><img src="/assets/icons/add-more.svg" alt=""></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td></td>
-    </tr>      <tr>
-      <th>1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td></td>
-    </tr>      <tr>
-      <th>1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td>@mdo</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+<div class="wrapper">
+  <div class="title_main">
+    <h2 class="mt-5">Decline Detail</h2>
+  </div>
+  <div class="date-select-pagination">
+    <div className="date-time d-flex align-items-center position-relative">
+      <div class="date_select">
+        <mat-form-field>
+          <mat-label class="label-float">Form date</mat-label>
+          <mat-select [(ngModel)]="selectedTime">
+            <mat-option value="5">5 minutes</mat-option>
+            <mat-option value="15">15 minutes</mat-option>
+            <mat-option value="30">30 minutes</mat-option>
+            <mat-option value="60">1 hours</mat-option>
+            <mat-option value="180">3 hours</mat-option>
+            <mat-option value="360">6 hours</mat-option>
+            <mat-option value="720">12 hours</mat-option>
+            <mat-option value="1440">24 hours</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="col-xs-12 col-12 col-md-4 form-group mb-3 date_time">
+          <mat-form-field class="example-form-field">
+            <mat-label>Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="datepicker"
+              [(ngModel)]="selectedDate"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="datepicker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #datepicker> </mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- <ul>
+      <li
+        *ngFor="
+          let item of collection
+            | paginate : { itemsPerPage: 10, currentPage: p }
+        "
+      >
+        ...
+      </li>
+    </ul> -->
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th scope="col" *ngFor="let column of displayedColumns">
+          {{ column.label }}
+        </th>
+        <th scope="col">
+          <button class="more-column" mat-menu-item (click)="openModal()">
+            <img src="/assets/icons/add-more.svg" alt="" />
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody class="table-rows">
+      <tr *ngFor="let data of tableData">
+        <td *ngFor="let column of displayedColumns">
+          {{ data[column.key] }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

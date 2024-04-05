@@ -1,0 +1,88 @@
+.cdk-overlay-pane {
+  border-radius: 12px !important;
+}
+
+.filter-modal {
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+
+  .filter-modal-content {
+    width: 339px;
+    height: 170px;
+    border-radius: 22px;
+    padding: 10px 16px 10px 16px;
+
+    .modal-input {
+      height: 44px;
+      padding: 10px, 16px, 10px, 16px;
+      border-radius: 10px;
+      gap: 12px;
+      display: flex;
+      align-items: center;
+      input[type="radio"] {
+        // width: 24px;
+        // height: 22px;
+        display: none;
+      }
+      .radio-btn {
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        border: 2px solid #ff6400; /* Border rengini değiştir */
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+
+      input[type="radio"]:checked + .radio-btn:before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #ff6400; /* İç daire rengini değiştir */
+      }
+    }
+
+    .pan-btns {
+      display: flex;
+      gap: 10px;
+      button {
+        padding: 5px 15px;
+        border-radius: 5px;
+      }
+      button:not(.clicked) {
+        border: 1px solid transparent;
+      }
+    }
+  }
+}
+
+.modal-btn {
+  padding: 0 16px;
+  button {
+    width: 307px;
+    height: 44px;
+    border-radius: 8px;
+    padding: 10, 24px, 10px, 24px;
+    gap: 10px;
+    border: none;
+    background: #ff6400;
+    color: white;
+    width: -webkit-fill-available;
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: center;
+  }
+}
+
+.clicked {
+  border: 1px solid #ff6400;
+}

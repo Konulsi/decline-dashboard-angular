@@ -1,4 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.table > thead {
+  vertical-align: middle !important;
+}
+
+.table > tbody {
+  vertical-align: middle !important;
+}
+
+.mat-mdc-select-arrow {
+  display: none;
+}
+
+.mat-mdc-select-arrow-wrapper::after {
+  background: url("./assets/icons/arrow-right.svg") no-repeat center center;
+  background-size: contain;
+  content: "";
+  display: inline-block !important;
+  width: 10px;
+  height: 10px;
+}
