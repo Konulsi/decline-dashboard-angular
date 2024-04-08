@@ -1,23 +1,25 @@
-.wrapper{
-  margin: 30px 100px;
+.wrapper {
+  margin: 24px 100px;
 }
 .logo {
   width: 180px;
 }
 
-button{
+.excel-btn {
   width: 141px;
   height: 44px;
   padding: 10px, 16px, 10px, 16px;
   border-radius: 9px;
   gap: 8px;
-  background: #55A932;
+  background: #55a932;
   color: white;
   border: none;
+  box-sizing: border-box;
+  cursor: pointer;
 }
-.title_main h2 {
-  font-size: 20px;
-  color: #222;
-  font-weight: 600;
-  line-height: 32px;
+.excel-btn.disabled {
+  cursor: initial;
+}
+.excel-icon {
+  margin-right: 12px;
 }
