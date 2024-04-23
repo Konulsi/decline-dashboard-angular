@@ -16,22 +16,35 @@ import { FILTERS } from 'src/app/helpers/constants';
 export class FilterModalComponent implements OnInit {
   filterModalData: any[] = FILTERS;
   selectedData = '0';
+  selectedPan = '10';
 
-  selectedRadioValue: any; //secilmis datani saxlamaq ucun
-  dataToSend: Subject<string> = new Subject<string>();
+  selectedRadioValue: any = {checked
+    :
+    false,
+    display
+    :
+    false,
+    label
+    :
+    "Merchant name",
+    value
+    :
+    "0"}; //secilmis datani saxlamaq ucun
+  dataToSend: Subject<any> = new Subject<any>();
 
   buttons: any[] = [
     {
-      text: 'All',
+      label: 'All',
+      value: '10',
+    },
+
+    {
+      label: '3+',
+      value: '3',
     },
     {
-      text: '1',
-    },
-    {
-      text: '3+',
-    },
-    {
-      text: '5+',
+      label: '5+',
+      value: '5',
     },
   ];
 
@@ -47,12 +60,23 @@ export class FilterModalComponent implements OnInit {
     this.selectedData = this.data.type;
   }
 
-  onRadioChange(value: string) {
-    this.selectedRadioValue = value;
+  onRadioChange(selected:any) {
+    console.log(selected);
+
+    this.selectedRadioValue = selected;
   }
 
+  // closeModal() {
+  //   this.dataToSend.next({value: this.selectedRadioValue.value, label: this.selectedRadioValue.label, pan: this.selectedPan});
+  //   this.dialogRef.close({value: this.selectedRadioValue.value, label: this.selectedRadioValue.label, pan: this.selectedPan});
+  // }
+
   closeModal() {
-    this.dialogRef.close(this.selectedRadioValue);
-    this.dataToSend.next(this.selectedRadioValue || '');
+    this.selectedPan = this.selectedRadioValue.value === '1' ? this.selectedPan : '10';
+    const selectedLabel = this.selectedRadioValue.value === '1' ? 'PAN' : this.selectedRadioValue.label;
+
+    this.dataToSend.next({value: this.selectedRadioValue.value, label: selectedLabel, pan: this.selectedPan});
+    this.dialogRef.close({value: this.selectedRadioValue.value, label: selectedLabel, pan: this.selectedPan});
   }
+
 }

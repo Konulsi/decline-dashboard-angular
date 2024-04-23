@@ -12,14 +12,13 @@
         <span class="radio-btn"></span>
         {{ data.label }}
       </label>
-
       <div class="pan-btns" *ngIf="selectedData === '1' && data.value === '1'">
         <button
           *ngFor="let button of buttons; let i = index"
-          (click)="selectedIndex = i"
+          (click)="selectedIndex = i; selectedPan = button.value; selectedRadioValue.value = '1'"
           [ngClass]="{ clicked: selectedIndex === i }"
         >
-          {{ button.text }}
+          {{ button.label }}
         </button>
       </div>
     </ng-container>

@@ -1,29 +1,40 @@
-<mat-dialog-content class="dialog-content">
-  <h2>Add columns</h2>
-  <div class="colCheckbox" *ngFor="let column of modalColumns">
-    {{ column.label }}
-    <input
-      type="checkbox"
-      id="checkbox_{{ column.key }}"
-      [(ngModel)]="column.checked"
-      [value]="column"
-      hidden
-    />
-    <label for="checkbox_{{ column.key }}" class="customCheckbox"></label>
+<div class="dialog">
+  <div class="dialog-content">
+    <h2>Add columns</h2>
+
+    <!-- <button (click)="close()">
+      <i class="fa-solid fa-xmark"></i>
+    </button> -->
+    <!-- <mat-icon fontSet="material-icons">face</mat-icon> -->
+    <div class="colCheckbox" *ngFor="let column of modalColumns">
+      {{ column.label }}
+      <input
+        type="checkbox"
+        id="checkbox_{{ column.key }}"
+        [(ngModel)]="column.checked"
+        [value]="column"
+        hidden
+      />
+      <label for="checkbox_{{ column.key }}" class="customCheckbox"></label>
+    </div>
   </div>
-</mat-dialog-content>
-<mat-dialog-actions>
+
   <div class="buttons">
     <button
-      class="cancelBtn"
+      class="cancelBtn btns"
       mat-button
       mat-dialog-close
       (click)="closeModal()"
     >
       Cancel
     </button>
-    <button class="addBtn" mat-button mat-dialog (click)="addSelectedColumn()">
+    <button
+      class="addBtn btns"
+      mat-button
+      mat-dialog
+      (click)="addSelectedColumn()"
+    >
       Add
     </button>
   </div>
-</mat-dialog-actions>
+</div>

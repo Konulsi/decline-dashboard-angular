@@ -33,6 +33,7 @@ export class DeclineListComponent implements OnInit {
   filterData: any[] = FILTERS;
 
   selectedCol = { label: 'Merchant Name', value: '0' };
+  selectedCount = {label: 'All',value: '10'}
 
   dataFromModal: string = '';
   subscription: Subscription | null = null;
@@ -52,23 +53,22 @@ export class DeclineListComponent implements OnInit {
     this.getTableData();
   }
 
+
   // http://retail-decline-info.unibank.lan/api/decline/decline-count?page=0&size=10&date=2024-03-05&last=5&type=0
   getTableData(
     type: string = '0',
     last: string = this.selectedTime,
-    date: Date = this.selectedDate
+    date: Date = this.selectedDate,
+    count = ''
   ) {
-    const isoDate = new Date(date);
-    const hours = Number(last);
-    isoDate.setHours(hours);
-
+    console.log(date);
     const azDate = this.datePipe.transform(
-      isoDate,
-      'yyyy-MM-ddTHH:mm:ss',
-      'Asia/Baku'
+      date,
+      'yyyy-MM-dd',
+
     );
 
-    const url =
+    let url =
       environment.apiUrl +
       'decline-count?type=' +
       type +
@@ -76,8 +76,11 @@ export class DeclineListComponent implements OnInit {
       last +
       '&date=' +
       azDate;
-    return this.http.get<any>(url).subscribe((data) => {
-      console.log(data);
+      if(count){
+        url += '&count=' + count;
+      }
+     this.http.get<any>(url).subscribe((data) => {
+      this.tableData = data.content
     });
   }
 
@@ -90,28 +93,12 @@ export class DeclineListComponent implements OnInit {
   }
 
   onDateChange(selectedDate: Date) {
-    // const selectedDate = event.value;
-    // const dateString = selectedDate.toString('dd-MM-yyyy');
 
-    // this.apiService.getDataForDate(dateString).subscribe((data) => {
-    //   this.apiService = data;
-    // });
-
-    const isoDate = selectedDate.toISOString().split('T')[0];
-    this.http
-      .get<any[]>(environment.apiUrl, {
-        params: { date: isoDate },
-      })
-      .subscribe((data) => {
-        this.tableData = data;
-        console.log(data);
-      });
-
-    // this.getTableData(
-    //   this.selectedCol.value,
-    //   this.selectedTime,
-    //   this.selectedDate
-    // );
+    this.getTableData(
+      this.selectedCol.value,
+      this.selectedTime,
+      this.selectedDate,
+    );
   }
 
   openModal(type: string): void {
@@ -122,16 +109,42 @@ export class DeclineListComponent implements OnInit {
     });
 
     dialogRef.componentInstance.dataToSend.subscribe((data) => {
+      console.log(data);
+
       this.dataFromModal = data;
+      // if(data.value === '1'){
+      // this.getTableData(data.value, this.selectedTime, this.selectedDate, data.pan);
+
+      // }else{
+      // this.getTableData(data.value, this.selectedTime, this.selectedDate);
+
+      // }
+
+
+        // Sütun başlığını güncelle
+        this.selectedCol = {
+          label: data.label,
+          value: data.value,
+        };
+
+          // Seçilen değere göre tablo verilerini yeniden getir
+    this.getTableData(data.value, this.selectedTime, this.selectedDate, data.pan);
+
+
+
     });
 
     dialogRef.afterClosed().subscribe((selectedValue) => {
+      // console.log(selectedValue);
+
       if (selectedValue) {
         this.selectedCol = {
           label: selectedValue.label,
           value: selectedValue.value,
         };
-        this.getTableData(selectedValue.value);
+
+        // this.getTableData(selectedValue.value, this.selectedTime, this.selectedDate, selectedValue.selectedPan);
+        // this.getTableData(selectedValue.value);
       }
     });
   }

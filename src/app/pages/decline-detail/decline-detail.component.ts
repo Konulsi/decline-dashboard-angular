@@ -52,12 +52,16 @@ export class DeclineDetailComponent implements OnInit {
   }
 
   openModal() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.position = { right: '0', top: '0' };
-    dialogConfig.restoreFocus = false;
-    dialogConfig.width = '387px';
-    dialogConfig.height = '100vh';
-    const dialogRef = this.dialog.open(ColumnListComponent, dialogConfig);
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.position = { right: '0', top: '0' };
+    // dialogConfig.restoreFocus = false;
+    // dialogConfig.width = '387px';
+    // dialogConfig.height = '100%';
+    const dialogRef = this.dialog.open(ColumnListComponent, {
+    position: { right: '0', top: '0'},
+    minHeight: '100%',
+    height: '100%',
+    });
     dialogRef.afterClosed().subscribe((result: any) => {
       const selecteds = result.selectedColumns;
 

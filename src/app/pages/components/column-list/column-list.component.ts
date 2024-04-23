@@ -43,4 +43,7 @@ export class ColumnListComponent implements OnInit {
   closeModal() {
     this.dialogRef.close();
   }
+  close(){
+    this.dialogRef.close();
+  }
 }
