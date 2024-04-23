@@ -70,7 +70,12 @@
         </tr>
       </thead>
       <tbody class="table-rows">
-        <tr *ngFor="let data of tableData | paginate: { itemsPerPage: 10, currentPage: p }">
+        <tr
+          *ngFor="
+            let data of tableData
+              | paginate: { itemsPerPage: 10, currentPage: p }
+          "
+        >
           <!-- <td>
             {{ data.number }}
           </td>
@@ -81,7 +86,7 @@
             {{ data.count }}
           </td> -->
 
-          <td *ngFor="let column of columns ">
+          <td *ngFor="let column of columns">
             {{ data[column.key] }}
           </td>
         </tr>

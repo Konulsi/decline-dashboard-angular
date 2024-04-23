@@ -1,8 +1,8 @@
-import { Column } from './../../interfaces/types';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ColumnListComponent } from '../components/column-list/column-list.component';
 import { COLUMNS, DECLINE_DETAIL_DATA } from 'src/app/helpers/constants';
+import { IDeclineDetails } from 'src/app/interfaces/types';
 
 @Component({
   selector: 'app-decline-detail',
@@ -20,6 +20,7 @@ export class DeclineDetailComponent implements OnInit {
   displayedColumns: any[] = [];
 
   tableData: any[] = DECLINE_DETAIL_DATA;
+  // tableData: IDeclineDetails[] = [];
 
   displayTableData: any[] = [];
 
@@ -58,9 +59,9 @@ export class DeclineDetailComponent implements OnInit {
     // dialogConfig.width = '387px';
     // dialogConfig.height = '100%';
     const dialogRef = this.dialog.open(ColumnListComponent, {
-    position: { right: '0', top: '0'},
-    minHeight: '100%',
-    height: '100%',
+      position: { right: '0', top: '0' },
+      minHeight: '100%',
+      height: '100%',
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       const selecteds = result.selectedColumns;
@@ -69,7 +70,7 @@ export class DeclineDetailComponent implements OnInit {
         for (const column of selecteds) {
           if (
             !this.displayedColumns.some(
-              (existingColumn: any) => existingColumn.key === column.key
+              (existingColumn: any) => existingColumn.key === column.key,
             )
           ) {
             this.displayedColumns.push({

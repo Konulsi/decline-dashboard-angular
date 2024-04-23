@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment.development';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ApiService } from 'src/app/services/api.service';
 import { DatePipe } from '@angular/common';
+import { IColumnList, IDeclineList } from 'src/app/interfaces/types';
 
 @Component({
   selector: 'app-decline-list',
@@ -28,12 +29,16 @@ export class DeclineListComponent implements OnInit {
 
   columns: any[] = DECLINE_COLUMNS;
 
-  tableData: any[] = DECLINE_LIST_DATA;
+  // tableData: any[] = DECLINE_LIST_DATA;
+
+  // columns: IColumnList[] = [];
+
+  tableData: IDeclineList[] = [];
 
   filterData: any[] = FILTERS;
 
   selectedCol = { label: 'Merchant Name', value: '0' };
-  selectedCount = {label: 'All',value: '10'}
+  selectedCount = { label: 'All', value: '10' };
 
   dataFromModal: string = '';
   subscription: Subscription | null = null;
@@ -42,7 +47,7 @@ export class DeclineListComponent implements OnInit {
     private dialog: MatDialog,
     private http: HttpClient,
     private apiService: ApiService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);
@@ -53,20 +58,15 @@ export class DeclineListComponent implements OnInit {
     this.getTableData();
   }
 
-
   // http://retail-decline-info.unibank.lan/api/decline/decline-count?page=0&size=10&date=2024-03-05&last=5&type=0
   getTableData(
     type: string = '0',
     last: string = this.selectedTime,
     date: Date = this.selectedDate,
-    count = ''
+    count = '',
   ) {
     console.log(date);
-    const azDate = this.datePipe.transform(
-      date,
-      'yyyy-MM-dd',
-
-    );
+    const azDate = this.datePipe.transform(date, 'yyyy-MM-dd');
 
     let url =
       environment.apiUrl +
@@ -76,11 +76,13 @@ export class DeclineListComponent implements OnInit {
       last +
       '&date=' +
       azDate;
-      if(count){
-        url += '&count=' + count;
-      }
-     this.http.get<any>(url).subscribe((data) => {
-      this.tableData = data.content
+    if (count) {
+      url += '&count=' + count;
+    }
+    this.http.get<any>(url).subscribe((data) => {
+      console.log(data);
+
+      this.tableData = data.content;
     });
   }
 
@@ -88,12 +90,11 @@ export class DeclineListComponent implements OnInit {
     this.getTableData(
       this.selectedCol.value,
       this.selectedTime,
-      this.selectedDate
+      this.selectedDate,
     );
   }
 
   onDateChange(selectedDate: Date) {
-
     this.getTableData(
       this.selectedCol.value,
       this.selectedTime,
@@ -120,18 +121,17 @@ export class DeclineListComponent implements OnInit {
 
       // }
 
+      this.selectedCol = {
+        label: data.label,
+        value: data.value,
+      };
 
-        // Sütun başlığını güncelle
-        this.selectedCol = {
-          label: data.label,
-          value: data.value,
-        };
-
-          // Seçilen değere göre tablo verilerini yeniden getir
-    this.getTableData(data.value, this.selectedTime, this.selectedDate, data.pan);
-
-
-
+      this.getTableData(
+        data.value,
+        this.selectedTime,
+        this.selectedDate,
+        data.pan,
+      );
     });
 
     dialogRef.afterClosed().subscribe((selectedValue) => {

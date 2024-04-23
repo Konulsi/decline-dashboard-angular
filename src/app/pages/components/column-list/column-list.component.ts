@@ -26,7 +26,7 @@ export class ColumnListComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ColumnListComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   ngOnInit(): void {}
@@ -36,14 +36,13 @@ export class ColumnListComponent implements OnInit {
 
     this.dialogRef.close({
       selectedColumns: this.selectedColumns,
-      // data: this.selectedColumns,
     });
   }
 
   closeModal() {
     this.dialogRef.close();
   }
-  close(){
+  close() {
     this.dialogRef.close();
   }
 }

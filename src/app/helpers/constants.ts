@@ -1,4 +1,7 @@
+
+
 export const DECLINE_DETAIL_DATA = [
+
   {
     id: 14414352,
     transactionId: '240227008547390294',
