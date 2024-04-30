@@ -3,6 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ColumnListComponent } from '../components/column-list/column-list.component';
 import { COLUMNS, DECLINE_DETAIL_DATA } from 'src/app/helpers/constants';
 import { IDeclineDetails } from 'src/app/interfaces/types';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.development';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-decline-detail',
@@ -16,48 +20,71 @@ export class DeclineDetailComponent implements OnInit {
 
   p: number = 1;
   collection: string[] = [];
+  totalItems = 0;
 
   displayedColumns: any[] = [];
 
-  tableData: any[] = DECLINE_DETAIL_DATA;
-  // tableData: IDeclineDetails[] = [];
+  // tableData: any[] = DECLINE_DETAIL_DATA;
+  tableData: IDeclineDetails[] = [];
 
-  displayTableData: any[] = [];
-
-  constructor(public dialog: MatDialog) {
+  constructor(
+    public dialog: MatDialog,
+    private activatedRoute: ActivatedRoute,
+    private http: HttpClient,
+    private datePipe: DatePipe,
+  ) {
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);
     }
   }
 
   ngOnInit(): void {
-    // this.getFullTableData();
     this.getDisplayedColumns(COLUMNS);
-  }
+    this.activatedRoute.params.subscribe(({ typeName }) => {
+      console.log(typeName);
 
-  // getFullTableData() {
-  //   for (const data of this.tableData) {
-  //     const row: any = {};
-  //     for (const column of this.displayedColumns) {
-  //       row[column.key] = data[column.key];
-  //     }
-  //     const isNotDefined = Object.keys(row).every((key) => !row[key]);
-  //     if (!isNotDefined) {
-  //       this.displayTableData.push(row);
-  //     }
-  //   }
-  // }
+      this.getTableDataByName(typeName);
+    });
+  }
 
   getDisplayedColumns(cols: any = []) {
     this.displayedColumns = cols.filter((column: any) => column.display);
   }
 
+  getTableDataByName(
+    type: string = '0',
+    last: string = this.selectedTime,
+    date: Date = this.selectedDate,
+    count = '',
+    typeName: string = '',
+  ) {
+    const azDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+    //retail-decline-info.unibank.lan/api/decline/by?page=0&size=10&date=2024-04-24&last=5&type=0&typeName=EMBAFINANS
+    //retail-decline-info.unibank.lan/api/decline/by?type=0&last=5&date=2024-04-24&typeName=
+
+    let url =
+      environment.apiUrl +
+      'by?type=' +
+      type +
+      '&last=' +
+      last +
+      '&date=' +
+      azDate +
+      '&typeName=' +
+      typeName;
+    if (count) {
+      url += '&count=' + count;
+    }
+
+    this.http.get<any>(url).subscribe((data) => {
+      console.log(data);
+
+      this.tableData = data.content;
+      this.totalItems = data.totalElements;
+    });
+  }
+
   openModal() {
-    // const dialogConfig = new MatDialogConfig();
-    // dialogConfig.position = { right: '0', top: '0' };
-    // dialogConfig.restoreFocus = false;
-    // dialogConfig.width = '387px';
-    // dialogConfig.height = '100%';
     const dialogRef = this.dialog.open(ColumnListComponent, {
       position: { right: '0', top: '0' },
       minHeight: '100%',

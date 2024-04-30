@@ -36,16 +36,6 @@
       </div>
     </div>
 
-    <!-- <ul>
-      <li
-        *ngFor="
-          let item of collection
-            | paginate : { itemsPerPage: 10, currentPage: p }
-        "
-      >
-        ...
-      </li>
-    </ul> -->
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </div>
   <table class="table mt-4">
@@ -61,10 +51,14 @@
         </th>
       </tr>
     </thead>
+
     <tbody class="table-rows">
       <tr *ngFor="let data of tableData">
         <td *ngFor="let column of displayedColumns">
-          {{ data[column.key] }}
+          {{
+            data[column.key]
+              | paginate: { itemsPerPage: 20, currentPage: p, totalItems }
+          }}
         </td>
       </tr>
     </tbody>

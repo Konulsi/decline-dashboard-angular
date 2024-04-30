@@ -13,6 +13,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ApiService } from 'src/app/services/api.service';
 import { DatePipe } from '@angular/common';
 import { IColumnList, IDeclineList } from 'src/app/interfaces/types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-decline-list',
@@ -24,14 +25,12 @@ export class DeclineListComponent implements OnInit {
   selectedTime: string = '5';
   selectedDate = new Date();
 
-  p: number = 1;
+  p: number = 0;
   collection: string[] = [];
+  totalItems: number = 0;
+  itemsPerPage: number = 10;
 
   columns: any[] = DECLINE_COLUMNS;
-
-  // tableData: any[] = DECLINE_LIST_DATA;
-
-  // columns: IColumnList[] = [];
 
   tableData: IDeclineList[] = [];
 
@@ -46,8 +45,8 @@ export class DeclineListComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private http: HttpClient,
-    private apiService: ApiService,
     private datePipe: DatePipe,
+    private router: Router,
   ) {
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);
@@ -55,6 +54,23 @@ export class DeclineListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getTableData();
+    // this.itemsPerPage = 10;
+  }
+
+  onPageChange(pageNumber: number): void {
+    // this.p = pageNumber;
+    // this.getTableData();
+
+    // console.log('Page number:', pageNumber);
+    // // this.itemsPerPage = 10;
+    // // this.showAllItems();
+    this.p = pageNumber;
+    console.log('Page number:', pageNumber);
+    // Sayfa numarasını güncelleyin
+    this.p = pageNumber;
+    // API isteğini gönderin
+    console.log('Sending request with page:', this.p);
     this.getTableData();
   }
 
@@ -64,9 +80,19 @@ export class DeclineListComponent implements OnInit {
     last: string = this.selectedTime,
     date: Date = this.selectedDate,
     count = '',
+    pageNumber: number = this.p,
+    pageSize: number = this.itemsPerPage,
   ) {
-    console.log(date);
-    const azDate = this.datePipe.transform(date, 'yyyy-MM-dd');
+    console.log(
+      'getTableData called with parameters:',
+      type,
+      last,
+      date,
+      count,
+      pageNumber,
+      pageSize,
+    );
+    const azeDate = this.datePipe.transform(date, 'yyyy-MM-dd');
 
     let url =
       environment.apiUrl +
@@ -75,14 +101,21 @@ export class DeclineListComponent implements OnInit {
       '&last=' +
       last +
       '&date=' +
-      azDate;
+      azeDate +
+      '&page=' +
+      (pageNumber - 1) +
+      '&size=' +
+      pageSize;
     if (count) {
       url += '&count=' + count;
     }
+
     this.http.get<any>(url).subscribe((data) => {
-      console.log(data);
+      console.log('Response:', data);
 
       this.tableData = data.content;
+      this.totalItems = data.totalElements;
+      //  this.p = pageNumber;
     });
   }
 
@@ -102,6 +135,36 @@ export class DeclineListComponent implements OnInit {
     );
   }
 
+  // updateTableData(itemsPerPage: number) {
+  //   this.itemsPerPage = itemsPerPage;
+  //   // Sayfa numarasını sıfırlayarak her seferinde ilk sayfadan başlamasını sağlayın
+  //   this.p = 0;
+  //   this.getTableData();
+  // }
+
+  updateTableData(itemsPerPage: number): void {
+    // itemsPerPage değişkenini güncelliyoruz
+    this.itemsPerPage = itemsPerPage;
+
+    // Yeni verileri getirmek için API isteği gönderiyoruz
+    // this.getTableData();
+    this.getTableData(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      1,
+      this.itemsPerPage,
+    );
+  }
+  showAllItems() {
+    this.itemsPerPage = this.totalItems; // Tüm verileri getirmek için öğe sayısını toplam veri sayısına eşitliyoruz
+    this.p = 0; // Sayfa numarasını sıfırlıyoruz
+    // this.updateTableData(); // Tablo verilerini güncelliyoruz
+    this.getTableData(); // Tüm verileri getirmek için HTTP isteği yapılıyor
+    console.log('Showing all items.');
+  }
+
   openModal(type: string): void {
     const dialogRef = this.dialog.open(FilterModalComponent, {
       width: '339px',
@@ -113,13 +176,6 @@ export class DeclineListComponent implements OnInit {
       console.log(data);
 
       this.dataFromModal = data;
-      // if(data.value === '1'){
-      // this.getTableData(data.value, this.selectedTime, this.selectedDate, data.pan);
-
-      // }else{
-      // this.getTableData(data.value, this.selectedTime, this.selectedDate);
-
-      // }
 
       this.selectedCol = {
         label: data.label,
@@ -147,6 +203,11 @@ export class DeclineListComponent implements OnInit {
         // this.getTableData(selectedValue.value);
       }
     });
+  }
+
+  redirectToDetails(typeName: string) {
+    this.router.navigate(['/decline/' + typeName]);
+    console.log('clicked');
   }
 
   ngOnDestroy() {

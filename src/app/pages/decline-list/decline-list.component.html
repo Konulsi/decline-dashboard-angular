@@ -39,18 +39,35 @@
         </div>
       </div>
     </div>
+    <!-- <pagination-controls
+      (pageChange)="onPageChange($event)"
+    ></pagination-controls> -->
+    <div class="pagination-controls">
+      <pagination-controls
+        (pageChange)="onPageChange($event)"
+      ></pagination-controls>
 
-    <!-- <ul>
-      <li
-        *ngFor="
-          let item of collection
-            | paginate : { itemsPerPage: 10, currentPage: p }
-        "
-      >
-        ...
-      </li>
-    </ul> -->
-    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      <div class="mat-select-container">
+        <mat-form-field>
+          <mat-label *ngIf="itemsPerPage === 10">10 / page</mat-label>
+          <mat-label *ngIf="itemsPerPage === 20">20 / page</mat-label>
+          <mat-label *ngIf="itemsPerPage === 30">30 / page</mat-label>
+          <mat-label *ngIf="itemsPerPage === 50">50 / page</mat-label>
+          <mat-label *ngIf="itemsPerPage === 100">100 / page</mat-label>
+          <mat-select
+            [(value)]="itemsPerPage"
+            (selectionChange)="updateTableData($event.value)"
+          >
+            <mat-option value="10">10 / page</mat-option>
+            <mat-option value="20">20 / page</mat-option>
+            <mat-option value="30">30 / page</mat-option>
+            <mat-option value="50">50 / page</mat-option>
+            <mat-option value="100">100 / page</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button mat-button (click)="showAllItems()">All item</button>
+    </div>
   </div>
   <div class="table-wrapper">
     <table class="table mt-4">
@@ -73,22 +90,22 @@
         <tr
           *ngFor="
             let data of tableData
-              | paginate: { itemsPerPage: 10, currentPage: p }
+              | paginate: { itemsPerPage: 10, currentPage: p, totalItems }
           "
         >
-          <!-- <td>
+          <td>
             {{ data.number }}
           </td>
-          <td>
+          <td (click)="redirectToDetails(data.type)">
             {{ data.type }}
           </td>
           <td>
             {{ data.count }}
-          </td> -->
-
-          <td *ngFor="let column of columns">
-            {{ data[column.key] }}
           </td>
+
+          <!-- <td *ngFor="let column of columns">
+            {{ data[column.key] }}
+          </td> -->
         </tr>
       </tbody>
     </table>
