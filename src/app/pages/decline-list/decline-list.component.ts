@@ -48,11 +48,6 @@ export class DeclineListComponent implements OnInit {
     this.getTableData();
   }
 
-  onPageChange(pageNumber: number): void {
-    this.p = pageNumber;
-    this.getTableData();
-  }
-
   // http://retail-decline-info.unibank.lan/api/decline/decline-count?page=0&size=10&date=2024-03-05&last=5&type=0
   getTableData(
     type: string = '0',
@@ -103,6 +98,11 @@ export class DeclineListComponent implements OnInit {
       this.selectedTime,
       this.selectedDate,
     );
+  }
+
+  onPageChange(pageNumber: number): void {
+    this.p = pageNumber;
+    this.getTableData();
   }
 
   updateTableData(itemsPerPage: number): void {
