@@ -19,9 +19,7 @@ import { COLUMNS } from 'src/app/helpers/constants';
 })
 export class ColumnListComponent implements OnInit {
   columns: any[] = COLUMNS;
-
   modalColumns: any[] = this.columns.filter((column) => !column.display);
-
   selectedColumns: any[] = [];
 
   constructor(
@@ -33,7 +31,6 @@ export class ColumnListComponent implements OnInit {
 
   addSelectedColumn() {
     this.selectedColumns = this.modalColumns.filter((column) => column.checked);
-
     this.dialogRef.close({
       selectedColumns: this.selectedColumns,
     });

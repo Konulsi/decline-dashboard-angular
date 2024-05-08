@@ -13,7 +13,6 @@ const routes: Routes = [
     component: DeclineDetailComponent,
   },
   { path: 'decline/:name', component: DeclineDetailComponent },
-  // { path: 'decline/details/by', component: DeclineDetailComponent },
   {
     path: '**',
     redirectTo: 'decline',

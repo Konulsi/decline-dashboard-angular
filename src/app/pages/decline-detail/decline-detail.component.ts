@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ColumnListComponent } from '../components/column-list/column-list.component';
-import { COLUMNS, DECLINE_DETAIL_DATA } from 'src/app/helpers/constants';
+import { COLUMNS } from 'src/app/helpers/constants';
 import { IDeclineDetails } from 'src/app/interfaces/types';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -23,8 +23,6 @@ export class DeclineDetailComponent implements OnInit {
   totalItems = 0;
 
   displayedColumns: any[] = [];
-
-  // tableData: any[] = DECLINE_DETAIL_DATA;
   tableData: IDeclineDetails[] = [];
 
   constructor(
@@ -41,8 +39,6 @@ export class DeclineDetailComponent implements OnInit {
   ngOnInit(): void {
     this.getDisplayedColumns(COLUMNS);
     this.activatedRoute.params.subscribe(({ typeName }) => {
-      console.log(typeName);
-
       this.getTableDataByName(typeName);
     });
   }
@@ -60,7 +56,6 @@ export class DeclineDetailComponent implements OnInit {
   ) {
     const azDate = this.datePipe.transform(date, 'yyyy-MM-dd');
     //retail-decline-info.unibank.lan/api/decline/by?page=0&size=10&date=2024-04-24&last=5&type=0&typeName=EMBAFINANS
-    //retail-decline-info.unibank.lan/api/decline/by?type=0&last=5&date=2024-04-24&typeName=
 
     let url =
       environment.apiUrl +
@@ -77,8 +72,6 @@ export class DeclineDetailComponent implements OnInit {
     }
 
     this.http.get<any>(url).subscribe((data) => {
-      console.log(data);
-
       this.tableData = data.content;
       this.totalItems = data.totalElements;
     });

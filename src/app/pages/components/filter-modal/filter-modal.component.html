@@ -15,7 +15,11 @@
       <div class="pan-btns" *ngIf="selectedData === '1' && data.value === '1'">
         <button
           *ngFor="let button of buttons; let i = index"
-          (click)="selectedIndex = i; selectedPan = button.value; selectedRadioValue.value = '1'"
+          (click)="
+            selectedIndex = i;
+            selectedPan = button.value;
+            selectedRadioValue.value = '1'
+          "
           [ngClass]="{ clicked: selectedIndex === i }"
         >
           {{ button.label }}

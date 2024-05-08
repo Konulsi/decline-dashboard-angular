@@ -35,7 +35,6 @@
         </div>
       </div>
     </div>
-
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </div>
   <table class="table mt-4">
@@ -51,7 +50,6 @@
         </th>
       </tr>
     </thead>
-
     <tbody class="table-rows">
       <tr *ngFor="let data of tableData">
         <td *ngFor="let column of displayedColumns">

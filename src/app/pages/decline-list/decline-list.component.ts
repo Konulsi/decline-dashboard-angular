@@ -1,18 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterModalComponent } from '../components/filter-modal/filter-modal.component';
-import {
-  DECLINE_COLUMNS,
-  DECLINE_LIST_DATA,
-  FILTERS,
-} from 'src/app/helpers/constants';
 import { HttpClient } from '@angular/common/http';
-import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { ApiService } from 'src/app/services/api.service';
 import { DatePipe } from '@angular/common';
-import { IColumnList, IDeclineList } from 'src/app/interfaces/types';
+import { IDeclineList } from 'src/app/interfaces/types';
 import { Router } from '@angular/router';
 
 @Component({
@@ -30,17 +22,11 @@ export class DeclineListComponent implements OnInit {
   totalItems: number = 0;
   itemsPerPage: number = 10;
 
-  columns: any[] = DECLINE_COLUMNS;
-
   tableData: IDeclineList[] = [];
-
-  filterData: any[] = FILTERS;
-
   selectedCol = { label: 'Merchant Name', value: '0' };
   selectedCount = { label: 'All', value: '10' };
 
   dataFromModal: string = '';
-  subscription: Subscription | null = null;
 
   constructor(
     private dialog: MatDialog,
@@ -55,22 +41,10 @@ export class DeclineListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTableData();
-    // this.itemsPerPage = 10;
   }
 
   onPageChange(pageNumber: number): void {
-    // this.p = pageNumber;
-    // this.getTableData();
-
-    // console.log('Page number:', pageNumber);
-    // // this.itemsPerPage = 10;
-    // // this.showAllItems();
     this.p = pageNumber;
-    console.log('Page number:', pageNumber);
-    // Sayfa numarasını güncelleyin
-    this.p = pageNumber;
-    // API isteğini gönderin
-    console.log('Sending request with page:', this.p);
     this.getTableData();
   }
 
@@ -83,15 +57,6 @@ export class DeclineListComponent implements OnInit {
     pageNumber: number = this.p,
     pageSize: number = this.itemsPerPage,
   ) {
-    console.log(
-      'getTableData called with parameters:',
-      type,
-      last,
-      date,
-      count,
-      pageNumber,
-      pageSize,
-    );
     const azeDate = this.datePipe.transform(date, 'yyyy-MM-dd');
 
     let url =
@@ -115,7 +80,6 @@ export class DeclineListComponent implements OnInit {
 
       this.tableData = data.content;
       this.totalItems = data.totalElements;
-      //  this.p = pageNumber;
     });
   }
 
@@ -135,19 +99,8 @@ export class DeclineListComponent implements OnInit {
     );
   }
 
-  // updateTableData(itemsPerPage: number) {
-  //   this.itemsPerPage = itemsPerPage;
-  //   // Sayfa numarasını sıfırlayarak her seferinde ilk sayfadan başlamasını sağlayın
-  //   this.p = 0;
-  //   this.getTableData();
-  // }
-
   updateTableData(itemsPerPage: number): void {
-    // itemsPerPage değişkenini güncelliyoruz
     this.itemsPerPage = itemsPerPage;
-
-    // Yeni verileri getirmek için API isteği gönderiyoruz
-    // this.getTableData();
     this.getTableData(
       undefined,
       undefined,
@@ -158,10 +111,9 @@ export class DeclineListComponent implements OnInit {
     );
   }
   showAllItems() {
-    this.itemsPerPage = this.totalItems; // Tüm verileri getirmek için öğe sayısını toplam veri sayısına eşitliyoruz
-    this.p = 0; // Sayfa numarasını sıfırlıyoruz
-    // this.updateTableData(); // Tablo verilerini güncelliyoruz
-    this.getTableData(); // Tüm verileri getirmek için HTTP isteği yapılıyor
+    this.itemsPerPage = this.totalItems;
+    this.p = 0;
+    this.getTableData();
     console.log('Showing all items.');
   }
 
@@ -173,10 +125,7 @@ export class DeclineListComponent implements OnInit {
     });
 
     dialogRef.componentInstance.dataToSend.subscribe((data) => {
-      console.log(data);
-
       this.dataFromModal = data;
-
       this.selectedCol = {
         label: data.label,
         value: data.value,
@@ -191,16 +140,11 @@ export class DeclineListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((selectedValue) => {
-      // console.log(selectedValue);
-
       if (selectedValue) {
         this.selectedCol = {
           label: selectedValue.label,
           value: selectedValue.value,
         };
-
-        // this.getTableData(selectedValue.value, this.selectedTime, this.selectedDate, selectedValue.selectedPan);
-        // this.getTableData(selectedValue.value);
       }
     });
   }
@@ -208,11 +152,5 @@ export class DeclineListComponent implements OnInit {
   redirectToDetails(typeName: string) {
     this.router.navigate(['/decline/' + typeName]);
     console.log('clicked');
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 }

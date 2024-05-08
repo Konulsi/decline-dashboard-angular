@@ -17,19 +17,14 @@ export class FilterModalComponent implements OnInit {
   filterModalData: any[] = FILTERS;
   selectedData = '0';
   selectedPan = '10';
+  selectedIndex: number = 0;
 
-  selectedRadioValue: any = {checked
-    :
-    false,
-    display
-    :
-    false,
-    label
-    :
-    "Merchant name",
-    value
-    :
-    "0"}; //secilmis datani saxlamaq ucun
+  selectedRadioValue: any = {
+    checked: false,
+    display: false,
+    label: 'Merchant name',
+    value: '0',
+  }; //secilmis datani saxlamaq ucun
   dataToSend: Subject<any> = new Subject<any>();
 
   buttons: any[] = [
@@ -48,35 +43,39 @@ export class FilterModalComponent implements OnInit {
     },
   ];
 
-  selectedIndex: number = 0;
-
   constructor(
     public dialogRef: MatDialogRef<FilterModalComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { type: string }
+    public data: { type: string },
   ) {}
 
   ngOnInit(): void {
     this.selectedData = this.data.type;
   }
 
-  onRadioChange(selected:any) {
+  onRadioChange(selected: any) {
     console.log(selected);
 
     this.selectedRadioValue = selected;
   }
 
-  // closeModal() {
-  //   this.dataToSend.next({value: this.selectedRadioValue.value, label: this.selectedRadioValue.label, pan: this.selectedPan});
-  //   this.dialogRef.close({value: this.selectedRadioValue.value, label: this.selectedRadioValue.label, pan: this.selectedPan});
-  // }
-
   closeModal() {
-    this.selectedPan = this.selectedRadioValue.value === '1' ? this.selectedPan : '10';
-    const selectedLabel = this.selectedRadioValue.value === '1' ? 'PAN' : this.selectedRadioValue.label;
+    this.selectedPan =
+      this.selectedRadioValue.value === '1' ? this.selectedPan : '10';
+    const selectedLabel =
+      this.selectedRadioValue.value === '1'
+        ? 'PAN'
+        : this.selectedRadioValue.label;
 
-    this.dataToSend.next({value: this.selectedRadioValue.value, label: selectedLabel, pan: this.selectedPan});
-    this.dialogRef.close({value: this.selectedRadioValue.value, label: selectedLabel, pan: this.selectedPan});
+    this.dataToSend.next({
+      value: this.selectedRadioValue.value,
+      label: selectedLabel,
+      pan: this.selectedPan,
+    });
+    this.dialogRef.close({
+      value: this.selectedRadioValue.value,
+      label: selectedLabel,
+      pan: this.selectedPan,
+    });
   }
-
 }
