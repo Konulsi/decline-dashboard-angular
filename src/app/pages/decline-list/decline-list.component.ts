@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterModalComponent } from '../components/filter-modal/filter-modal.component';
 import { HttpClient } from '@angular/common/http';
@@ -27,6 +27,11 @@ export class DeclineListComponent implements OnInit {
   selectedCount = { label: 'All', value: '10' };
 
   dataFromModal: string = '';
+
+  // Verileri HeaderComponent içine aktarmak için output tanımlayın
+  @Output() tableDataEvent: EventEmitter<IDeclineList[]> = new EventEmitter<
+    IDeclineList[]
+  >();
 
   constructor(
     private dialog: MatDialog,
@@ -80,6 +85,7 @@ export class DeclineListComponent implements OnInit {
 
       this.tableData = data.content;
       this.totalItems = data.totalElements;
+      this.tableDataEvent.emit(data);
     });
   }
 

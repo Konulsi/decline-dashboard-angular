@@ -14,20 +14,53 @@ export class HeaderComponent {
   tableData: IDeclineList[] = [];
 
   constructor(private http: HttpClient) {}
+
   exportToExcel() {
+    const params = {
+      type: '0',
+      last: '5',
+      date: new Date().toISOString(),
+      page: '0',
+      size: '10',
+    };
+    // if (count) {
+    //   params += '&count=' + count;
+    // }
+
     this.http
-      .get<any>(this.baseUrl + 'export-to-excel/main-page')
-      .subscribe((data) => {
-        this.createExcelFile(data);
-        console.log('export excel file', data);
-      });
+      .get<IDeclineList[]>(this.baseUrl + 'decline-count', { params })
+      .subscribe(
+        (data) => {
+          console.log('Response:', data);
+          this.createExcelFile(data);
+        },
+        (error) => {
+          console.error('Error:', error);
+        },
+      );
   }
 
-  createExcelFile(data: any[]) {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+  createExcelFile(data: IDeclineList[] | IDeclineList) {
+    let dataArray: any[];
+
+    if (Array.isArray(data)) {
+      dataArray = data.map((item) => [
+        item.key,
+        item.type,
+        item.count,
+        item.number,
+      ]);
+    } else if (data) {
+      dataArray = [[data.key, data.type, data.count, data.number]];
+    } else {
+      console.error('No data received from API.');
+      return;
+    }
+
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(dataArray);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'data.xlsx');
-    console.log('clicked Excell button');
+    console.log('Clicked on Excel button');
   }
 }
