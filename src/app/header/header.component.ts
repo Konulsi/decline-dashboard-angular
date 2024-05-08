@@ -13,6 +13,8 @@ export class HeaderComponent {
   baseUrl = environment.apiUrl;
   tableData: IDeclineList[] = [];
 
+  itemsPerPage: number = 20; //isteye gore deyisilmelidir
+
   constructor(private http: HttpClient) {}
 
   exportToExcel() {
@@ -21,7 +23,7 @@ export class HeaderComponent {
       last: '5',
       date: new Date().toISOString(),
       page: '0',
-      size: '10',
+      size: this.itemsPerPage,
     };
     // if (count) {
     //   params += '&count=' + count;

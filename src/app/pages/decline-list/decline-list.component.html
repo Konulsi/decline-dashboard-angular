@@ -45,12 +45,13 @@
       ></pagination-controls>
 
       <div class="mat-select-container">
-        <mat-form-field>
+        <mat-form-field class="pageSize-select">
           <mat-label *ngIf="itemsPerPage === 10">10 / page</mat-label>
           <mat-label *ngIf="itemsPerPage === 20">20 / page</mat-label>
           <mat-label *ngIf="itemsPerPage === 30">30 / page</mat-label>
           <mat-label *ngIf="itemsPerPage === 50">50 / page</mat-label>
           <mat-label *ngIf="itemsPerPage === 100">100 / page</mat-label>
+
           <mat-select
             [(value)]="itemsPerPage"
             (selectionChange)="updateTableData($event.value)"
@@ -60,10 +61,17 @@
             <mat-option value="30">30 / page</mat-option>
             <mat-option value="50">50 / page</mat-option>
             <mat-option value="100">100 / page</mat-option>
+            <button
+              style="margin-left: 10px"
+              mat-button
+              (click)="showAllItems()"
+            >
+              All item
+            </button>
           </mat-select>
         </mat-form-field>
       </div>
-      <button mat-button (click)="showAllItems()">All item</button>
+      <!-- <button mat-button (click)="showAllItems()">All item</button> -->
     </div>
   </div>
   <div class="table-wrapper">
