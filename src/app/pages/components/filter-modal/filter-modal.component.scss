@@ -2,6 +2,11 @@
   border-radius: 12px !important;
 }
 
+.mdc-dialog__container {
+  position: relative !important;
+  top: 145px !important;
+}
+
 .filter-modal {
   border-radius: 12px;
   display: flex;

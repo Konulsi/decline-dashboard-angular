@@ -15,6 +15,7 @@
   color: #222;
   font-weight: 600;
   line-height: 32px;
+  font-family: sans-serif; //san-francisco olmalidir
 }
 
 .float-label {
@@ -27,13 +28,11 @@
   font-weight: 400;
   position: absolute;
   pointer-events: none;
-  // left: 12px;
   top: 35px;
   transition: 0.2s ease all;
 }
 
 .label-float {
-  // top: 6px;
   font-size: 10px;
 }
 .date-select-pagination {
@@ -52,10 +51,6 @@
   width: 204px;
   height: 56px;
   padding: 8px, 12px, 8px, 12px;
-  border-radius: 8px;
-  gap: 10px;
-  background: #f5f5f5;
-  border: none;
 }
 
 .datepicker-head {
@@ -79,11 +74,18 @@ table th {
 }
 
 .table-rows tr {
-  font-size: 17px;
   color: #575353 !important;
   font-weight: bold !important;
   width: 413.33px;
   height: 64px;
+}
+
+thead tr th {
+  font-size: 12px;
+  color: #575353 !important;
+  font-weight: 400 !important;
+  font-family: sans-serif; //san-francisco olmalidir
+  line-height: 20px;
 }
 
 .more-column {
@@ -92,5 +94,10 @@ table th {
   background: transparent;
 }
 
-///
-/// ///
+.table-rows td {
+  font-size: 12px;
+  color: #575353 !important;
+  font-weight: 400 !important;
+  font-family: sans-serif; //san-francisco olmalidir
+  line-height: 20px;
+}

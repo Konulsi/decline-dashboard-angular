@@ -15,6 +15,7 @@
   color: #222;
   font-weight: 600;
   line-height: 32px;
+  font-family: sans-serif; //san-francisco olmalidir
 }
 
 .float-label {
@@ -50,10 +51,6 @@
   width: 204px;
   height: 56px;
   padding: 8px, 12px, 8px, 12px;
-  border-radius: 8px;
-  gap: 10px;
-  background: #f5f5f5;
-  border: none;
 }
 
 .datepicker-head {
@@ -62,8 +59,8 @@
 .pagination-controls {
   display: flex;
   align-items: center;
-
-  // li {
+  // .li {
+  //   background-color: #a9a9a952;
   //   width: 50px;
   //   height: 50px;
   //   text-align: center;
@@ -80,7 +77,7 @@
 }
 
 .filterIcon {
-  width: 15px;
+  width: 12px;
   cursor: pointer;
 }
 h1 {
@@ -106,20 +103,26 @@ table th {
 }
 
 .table-rows tr {
-  font-size: 17px;
   color: #575353 !important;
   font-weight: bold !important;
   width: 413.33px;
   height: 64px;
 }
 
-.table-rows td {
-  padding: 0px, 16px, 0px, 16px;
-  border: 0px, 0px, 0px, 2px;
-  gap: 12px;
-  font-size: 17px;
+thead tr th {
+  font-size: 12px;
   color: #575353 !important;
-  font-weight: bold !important;
+  font-weight: 400 !important;
+  font-family: sans-serif; //san-francisco olmalidir
+  line-height: 20px;
+}
+
+.table-rows td {
+  font-size: 12px;
+  color: #575353 !important;
+  font-weight: 400 !important;
+  font-family: sans-serif; //san-francisco olmalidir
+  line-height: 20px;
 }
 
 .table-rows tr:nth-child(-n + 3) td,

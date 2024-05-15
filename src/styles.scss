@@ -3,8 +3,6 @@
 html,
 body {
   height: 100%;
-}
-body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -28,4 +26,67 @@ body {
   display: inline-block !important;
   width: 10px;
   height: 10px;
+}
+
+.mat-mdc-text-field-wrapper {
+  border-radius: 8px !important;
+  width: 164px;
+  height: 56px;
+  padding: 8px, 12px, 8px, 12px;
+  opacity: 50%;
+}
+
+.mat-mdc-form-field-hint-spacer {
+  display: none !important;
+}
+
+.mat-calendar-body-selected {
+  background-color: #ff6400;
+}
+
+.mat-calendar-body-cell-content {
+  border-radius: 0% !important;
+}
+.mat-mdc-icon-button .mat-mdc-button-persistent-ripple {
+  border-radius: 0% !important;
+}
+.mat-mdc-button-ripple {
+  display: none !important;
+}
+
+.mat-ripple {
+  opacity: 0 !important;
+}
+
+.mat-pseudo-checkbox-minimal {
+  display: none !important;
+}
+.mat-mdc-option-active {
+  background-color: rgba(255, 100, 0, 0.1) !important;
+}
+.mdc-list-item__primary-text {
+  color: black !important;
+  font-size: 14px !important;
+}
+
+.mdc-line-ripple {
+  display: none !important;
+}
+.ngx-pagination li a {
+  text-decoration: none;
+}
+
+.ngx-pagination .current {
+  border: 1px solid #ff6400 !important;
+  color: #ff6400 !important;
+  background-color: white !important;
+}
+
+.ngx-pagination li a {
+  &:hover {
+    border: 1px solid #ff6400 !important;
+    color: #ff6400 !important;
+    background-color: white !important;
+    text-decoration: none;
+  }
 }

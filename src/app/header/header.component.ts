@@ -44,18 +44,20 @@ export class HeaderComponent {
 
   createExcelFile(data: any) {
     const jsonData = data.content.map((item: any) => {
+      //apiden gelen datani map ederek yeni formata saliriq
       return {
-        ID: item.key,
+        // ID: item.key,
         Name: item.type,
         Number: item.number,
         Count: item.count,
       };
     });
 
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData); //json formatindaki datani excell formatina cevirir
+    const wb: XLSX.WorkBook = XLSX.utils.book_new(); //yeni excell isleme kitabi yaradiriq veya cedveli
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1'); //yaratdigimiz excel formatinda datani acdigimiz yeni excell cedvelione elave edirik
     const excelBuffer: any = XLSX.write(wb, {
+      //cedveldeki yaratdigimiz datalar fayl formatina cevrilib savechangefile methoduna save olunmaga gonderilir
       bookType: 'xlsx',
       type: 'array',
     });
@@ -63,16 +65,18 @@ export class HeaderComponent {
   }
 
   saveExcelFile(buffer: any, fileName: string) {
+    //method fayli komputere yukjleye bilmek uchun ist edilir
     const data: Blob = new Blob([buffer], {
+      //blob ile faylin icerigi ve novu teyin edilir
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });
-    const url = window.URL.createObjectURL(data);
-    const a = document.createElement('a');
+    const url = window.URL.createObjectURL(data); //bunun ile faylin icerisini erisim saglanir ve bir url yaradilir
+    const a = document.createElement('a'); //<a> etiketi ile faylin url-si ve yuklenme adi teyin edilir.
     document.body.appendChild(a);
     a.href = url;
     a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    a.click(); //bunu ile faylin avtomatik yuklenmesi olur
+    window.URL.revokeObjectURL(url); //faylin yuklendikden sonra lazimsiz url silinir
+    document.body.removeChild(a); // ve etiket kaldirilir.
   }
 }
