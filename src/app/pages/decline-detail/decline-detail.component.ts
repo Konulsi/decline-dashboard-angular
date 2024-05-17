@@ -39,7 +39,15 @@ export class DeclineDetailComponent implements OnInit {
   ngOnInit(): void {
     this.getDisplayedColumns(COLUMNS);
     this.activatedRoute.params.subscribe(({ typeName }) => {
-      this.getTableDataByName(typeName);
+      console.log('Received merchantName:', typeName);
+
+      this.getTableDataByName(
+        '0',
+        this.selectedTime,
+        this.selectedDate,
+        '',
+        typeName,
+      );
     });
   }
 

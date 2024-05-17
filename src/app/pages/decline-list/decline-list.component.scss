@@ -103,26 +103,27 @@ table th {
 }
 
 .table-rows tr {
-  color: #575353 !important;
-  font-weight: bold !important;
+  // color: #222222 !important;
+  // font-weight: bold !important;
   width: 413.33px;
   height: 64px;
 }
 
 thead tr th {
-  font-size: 12px;
+  font-size: 14px;
   color: #575353 !important;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
   font-family: sans-serif; //san-francisco olmalidir
   line-height: 20px;
 }
 
 .table-rows td {
   font-size: 12px;
-  color: #575353 !important;
+  color: #222222 !important;
   font-weight: 400 !important;
   font-family: sans-serif; //san-francisco olmalidir
   line-height: 20px;
+  cursor: pointer;
 }
 
 .table-rows tr:nth-child(-n + 3) td,

@@ -155,8 +155,8 @@ export class DeclineListComponent implements OnInit {
     });
   }
 
-  redirectToDetails(typeName: string) {
-    this.router.navigate(['/decline/' + typeName]);
-    console.log('clicked');
+  redirectToDetails(merchantName: string) {
+    this.router.navigate(['/decline', merchantName]);
+    console.log('Redirecting to details for merchant:', merchantName);
   }
 }

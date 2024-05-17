@@ -81,9 +81,9 @@ table th {
 }
 
 thead tr th {
-  font-size: 12px;
+  font-size: 14px;
   color: #575353 !important;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
   font-family: sans-serif; //san-francisco olmalidir
   line-height: 20px;
 }
@@ -100,4 +100,5 @@ thead tr th {
   font-weight: 400 !important;
   font-family: sans-serif; //san-francisco olmalidir
   line-height: 20px;
+  cursor: pointer;
 }

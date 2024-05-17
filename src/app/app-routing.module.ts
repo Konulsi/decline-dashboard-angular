@@ -12,7 +12,7 @@ const routes: Routes = [
     path: 'decline/details',
     component: DeclineDetailComponent,
   },
-  { path: 'decline/:name', component: DeclineDetailComponent },
+  { path: 'decline/:typeName', component: DeclineDetailComponent },
   {
     path: '**',
     redirectTo: 'decline',
