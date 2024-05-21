@@ -17,7 +17,7 @@ export class DeclineListComponent implements OnInit {
   selectedTime: string = '5';
   selectedDate = new Date();
 
-  p: number = 0;
+  p: number = 1;
   collection: string[] = [];
   totalItems: number = 0;
   itemsPerPage: number = 10;

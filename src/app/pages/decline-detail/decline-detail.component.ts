@@ -21,6 +21,7 @@ export class DeclineDetailComponent implements OnInit {
   p: number = 1;
   collection: string[] = [];
   totalItems = 0;
+  itemsPerPage: number = 10;
 
   displayedColumns: any[] = [];
   tableData: IDeclineDetails[] = [];
@@ -51,6 +52,11 @@ export class DeclineDetailComponent implements OnInit {
     });
   }
 
+  onPageChange(pageNumber: number): void {
+    this.p = pageNumber;
+    this.getTableDataByName();
+  }
+
   getDisplayedColumns(cols: any = []) {
     this.displayedColumns = cols.filter((column: any) => column.display);
   }
@@ -61,6 +67,8 @@ export class DeclineDetailComponent implements OnInit {
     date: Date = this.selectedDate,
     count = '',
     typeName: string = '',
+    pageNumber: number = this.p,
+    pageSize: number = this.itemsPerPage,
   ) {
     const azDate = this.datePipe.transform(date, 'yyyy-MM-dd');
     //retail-decline-info.unibank.lan/api/decline/by?page=0&size=10&date=2024-04-24&last=5&type=0&typeName=EMBAFINANS
@@ -74,7 +82,11 @@ export class DeclineDetailComponent implements OnInit {
       '&date=' +
       azDate +
       '&typeName=' +
-      typeName;
+      typeName +
+      '&page=' +
+      (pageNumber - 1) +
+      '&size=' +
+      pageSize;
     if (count) {
       url += '&count=' + count;
     }
@@ -82,6 +94,7 @@ export class DeclineDetailComponent implements OnInit {
     this.http.get<any>(url).subscribe((data) => {
       this.tableData = data.content;
       this.totalItems = data.totalElements;
+      console.log(this.totalItems);
     });
   }
 
