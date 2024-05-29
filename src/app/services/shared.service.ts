@@ -36,23 +36,65 @@ export class SharedService {
       const ws = wb.Sheets[wb.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(ws);
       console.log('JSON data processed', jsonData);
-      this.processJsonData(jsonData);
+      this.currentPage$.subscribe((pageInfo) => {
+        this.processJsonData(jsonData, pageInfo.pageType);
+      });
     };
     reader.readAsArrayBuffer(data);
   }
-  processJsonData(jsonData: any) {
+  processJsonData(jsonData: any, pageType: string) {
     if (jsonData.length === 0) {
       console.error('No data found in JSON.');
       return;
     }
 
-    const formattedData = jsonData.map((item: any) => {
-      return {
-        'Top Number': item['Top Number'],
-        'Merchant Name': item['Merchant Name'],
-        Count: item['Count'],
-      };
-    });
+    let formattedData;
+
+    if (pageType === 'DETAIL') {
+      console.log(jsonData);
+
+      formattedData = jsonData.map((item: any) => {
+        return {
+          'FULL Name': item['Full Name'],
+          Telephone: item['Telephone'],
+          'Merchant Name': item['Merchant Name'],
+          'Decline Reason': item['Decline Reason'],
+          Result: item['Result'],
+          TransactionId: item['TransactionId'],
+          Amount: item['Amount'],
+          'Expired Date': item['Expired Date'],
+          // '3D': item['Telephone'],
+          'Fin Code': item['Fin Code'],
+          'Operation Time': item['Operation Time'],
+          Currency: item['Currency'],
+          Extrid: item['ExtRid'],
+          Dpan: item['Dpan'],
+          ProdType: item['ProdType'],
+          WalletType: item['DpanWalletRid'],
+          'Acquirer Country Id': item['Acquirer Country Id'],
+          'Card Status': item['Card Status'],
+          'Azn Equivalent': item['Azn Equivalent'],
+          'Credit Limit': item['Credit Limit'],
+          'Entry Mode': item['Entry Mode'],
+        };
+      });
+    } else {
+      formattedData = jsonData.map((item: any) => {
+        return {
+          'Top Number': item['Top Number'],
+          'Merchant Name': item['Merchant Name'],
+          Count: item['Count'],
+        };
+      });
+    }
+
+    // const formattedData = jsonData.map((item: any) => {
+    //   return {
+    //     'Top Number': item['Top Number'],
+    //     'Merchant Name': item['Merchant Name'],
+    //     Count: item['Count'],
+    //   };
+    // });
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();

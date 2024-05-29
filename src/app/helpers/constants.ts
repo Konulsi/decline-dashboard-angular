@@ -53,6 +53,54 @@ export const DECLINE_LIST_DATA = [
 
 export const COLUMNS = [
   {
+    key: 'fullName',
+    label: 'Full Name',
+    display: true,
+    checked: false,
+  },
+
+  {
+    key: 'mobilePhone',
+    label: 'Telephone',
+    display: true,
+  },
+  {
+    key: 'merchantName',
+    label: 'Merchant Name',
+    display: true,
+  },
+  {
+    key: 'result',
+    label: 'Decline Result',
+    display: true,
+  },
+  {
+    key: 'amount',
+    label: 'Amount',
+    display: true,
+  },
+  {
+    key: 'pseudoPan',
+    label: 'ExtRid',
+    display: true,
+  },
+  {
+    key: 'entryMode',
+    label: 'Entry Mode',
+    display: true,
+  },
+  {
+    key: 'currency',
+    label: 'Currency',
+    display: true,
+  },
+
+  {
+    key: 'availableBalance',
+    label: 'Available Balance',
+    display: true,
+  },
+  {
     key: 'id',
     label: 'Id',
     display: false,
@@ -61,7 +109,7 @@ export const COLUMNS = [
   {
     key: 'transactionId',
     label: 'Transaction Id',
-    display: true,
+    display: false,
     checked: false,
   },
   {
@@ -76,42 +124,14 @@ export const COLUMNS = [
     display: false,
     checked: false,
   },
-  {
-    key: 'pseudoPan',
-    label: 'Pseudo Pan',
-    display: false,
-    checked: false,
-  },
-  {
-    key: 'amount',
-    label: 'Amount',
-    display: true,
-    checked: false,
-  },
-  {
-    key: 'currency',
-    label: 'Currency',
-    display: false,
-    checked: false,
-  },
-  {
-    key: 'merchantName',
-    label: 'Merchant Name',
-    display: false,
-    checked: false,
-  },
+
   {
     key: 'prodType',
     label: 'Prod Type',
     display: false,
     checked: false,
   },
-  {
-    key: 'result',
-    label: 'Result',
-    display: false,
-    checked: false,
-  },
+
   {
     key: 'resultText',
     label: 'Result Text',
@@ -148,18 +168,7 @@ export const COLUMNS = [
     display: false,
     checked: false,
   },
-  {
-    key: 'fullName',
-    label: 'Full Name',
-    display: true,
-    checked: false,
-  },
-  {
-    key: 'mobilePhone',
-    label: 'Mobile Phone',
-    display: false,
-    checked: false,
-  },
+
   {
     key: 'finCode',
     label: 'Fin Code',
@@ -180,18 +189,6 @@ export const COLUMNS = [
   {
     key: 'creditLimit',
     label: 'Credit Limit',
-    display: false,
-    checked: false,
-  },
-  {
-    key: 'entryMode',
-    label: 'Entry Mode',
-    display: false,
-    checked: false,
-  },
-  {
-    key: 'availableBalance',
-    label: 'Available Balance',
     display: false,
     checked: false,
   },
