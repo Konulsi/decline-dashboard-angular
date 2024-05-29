@@ -30,6 +30,10 @@ export class DeclineDetailComponent implements OnInit, OnDestroy {
 
   currentPageSubscription: Subscription;
 
+  filters: any = {
+    typeName: '',
+  };
+
   constructor(
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
@@ -55,21 +59,21 @@ export class DeclineDetailComponent implements OnInit, OnDestroy {
         ? +params['pageSize']
         : this.itemsPerPage;
       const count = params['count'] || '';
-      const typeName = params['typeName'];
+      this.filters.typeName = params['typeName'];
 
       this.selectedTime = last;
       this.selectedDate = date;
       this.p = pageNumber;
       this.itemsPerPage = pageSize;
 
-      this.sharedService.setCurrentPage('DETAIL', typeName);
+      this.sharedService.setCurrentPage('DETAIL', this.filters.typeName);
       this.getDisplayedColumns(COLUMNS);
       this.getTableDataByName(
         type,
         last,
         date,
         count,
-        typeName,
+        this.filters.typeName,
         pageNumber,
         pageSize,
       );
@@ -85,7 +89,7 @@ export class DeclineDetailComponent implements OnInit, OnDestroy {
     last: string = this.selectedTime,
     date: Date = this.selectedDate,
     count = '',
-    typeName: string = '',
+    typeName: string = this.filters.typeName,
     pageNumber: number = this.p,
     pageSize: number = this.itemsPerPage,
   ) {
@@ -110,14 +114,10 @@ export class DeclineDetailComponent implements OnInit, OnDestroy {
       url += '&count=' + count;
     }
 
-    // console.log('Request URL:', url);
-
     this.http.get<any>(url).subscribe({
       next: (data) => {
         this.tableData = data.content;
         this.totalItems = data.totalElements;
-        // console.log(this.totalItems);
-        // console.log('Response:', data);
       },
       error: (error) => {
         console.log('Error:', error);
@@ -135,21 +135,28 @@ export class DeclineDetailComponent implements OnInit, OnDestroy {
         ? new Date(params['date'])
         : this.selectedDate;
       const count = params['count'] || '';
-      const typeName = params['typeName'];
+      this.filters.typeName = params['typeName'];
 
       this.getTableDataByName(
         type,
         last,
         date,
         count,
-        typeName,
+        this.filters.typeName,
         pageNumber,
         this.itemsPerPage,
       );
 
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
-        queryParams: { type, last, date, count, pageNumber, typeName },
+        queryParams: {
+          type,
+          last,
+          date,
+          count,
+          pageNumber,
+          typeName: this.filters.typeName,
+        },
         queryParamsHandling: 'merge',
       });
     });
@@ -164,7 +171,7 @@ export class DeclineDetailComponent implements OnInit, OnDestroy {
       undefined,
       undefined,
       undefined,
-      undefined,
+      this.filters.typeName,
       1,
       this.itemsPerPage,
     );
