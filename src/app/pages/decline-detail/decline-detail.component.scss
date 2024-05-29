@@ -57,6 +57,22 @@
   background-color: #ff6400;
 }
 
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  // .li {
+  //   background-color: #a9a9a952;
+  //   width: 50px;
+  //   height: 50px;
+  //   text-align: center;
+  //   padding: 10px;
+  // }
+}
+
+.pageSize-select {
+  width: 130px;
+}
+
 table th {
   font-size: 17px;
   color: #575353 !important;
@@ -74,8 +90,8 @@ table th {
 }
 
 .table-rows tr {
-  color: #575353 !important;
-  font-weight: bold !important;
+  // color: #575353 !important;
+  // font-weight: bold !important;
   width: 413.33px;
   height: 64px;
 }
@@ -96,7 +112,7 @@ thead tr th {
 
 .table-rows td {
   font-size: 12px;
-  color: #575353 !important;
+  color: #222222 !important;
   font-weight: 400 !important;
   font-family: sans-serif; //san-francisco olmalidir
   line-height: 20px;

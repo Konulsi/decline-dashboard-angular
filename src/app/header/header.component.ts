@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import * as XLSX from 'xlsx';
 import { IDeclineList } from '../interfaces/types';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { SharedService } from '../services/shared.service';
+import { Subscription, filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -19,88 +21,54 @@ export class HeaderComponent implements OnInit {
   selectedTime = '5';
   selectedDate = new Date();
 
+  currentPage: string = '';
+  currentPageSubscription: Subscription;
+  isDetail = false;
+  typeName = '';
+
   constructor(
-    private http: HttpClient,
+    private router: Router,
     private datePipe: DatePipe,
+    private sharedService: SharedService,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.currentPageSubscription = this.sharedService.currentPage$.subscribe(
+      (obj) => {
+        this.isDetail = obj.pageType === 'DETAIL';
+        this.typeName = obj.typeName;
+        console.log(this.isDetail);
+      },
+    );
+  }
 
   exportToExcel() {
-    const azDate = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
+    const currentPage = this.router.url;
+    let url = '';
 
-    let params = new HttpParams()
-      .set('type', '0')
-      .set('last', this.selectedTime)
-      .set('date', azDate)
-      .set('page', '0')
-      .set('size', this.itemsPerPage.toString());
-
-    this.http
-      .get(this.baseUrl + 'export-to-excel/main-page', {
-        params,
-        responseType: 'blob',
-      })
-      .subscribe(
-        (data) => {
-          console.log('Response:', data);
-          this.createExcelFile(data);
-        },
-        (error) => {
-          console.error('Error:', error);
-        },
-      );
-  }
-
-  createExcelFile(data: Blob) {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      const dataArray = new Uint8Array(e.target.result);
-      const wb = XLSX.read(dataArray, { type: 'array' });
-
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(ws);
-      console.log('JSON Data:', jsonData);
-      this.processJsonData(jsonData);
-    };
-    reader.readAsArrayBuffer(data);
-  }
-
-  processJsonData(jsonData: any) {
-    if (jsonData.length === 0) {
-      console.warn('Boş veri seti döndü');
-      return;
+    if (this.isDetail) {
+      url = `${this.baseUrl}export-to-excel?typeName=${this.typeName}`;
+    } else {
+      url = `${this.baseUrl}export-to-excel/main-page`;
     }
 
-    const formattedData = jsonData.map((item: any) => {
-      return {
-        'Top Number': item['Top Number'],
-        'Merchant Name': item['Merchant Name'],
-        Count: item['Count'],
-      };
-    });
+    const params = new HttpParams()
+      .set('type', '0')
+      .set('last', '5')
+      .set('date', this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '')
+      .set('page', '0')
+      .set('size', '20');
 
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    const excelBuffer: any = XLSX.write(wb, {
-      bookType: 'xlsx',
-      type: 'array',
-    });
-    this.saveExcelFile(excelBuffer, 'data.xlsx');
+    this.sharedService
+      .exportToExcel(url, params, currentPage)
+      .subscribe((blobData) => {
+        this.sharedService.createExcelFile(blobData);
+      });
   }
 
-  saveExcelFile(buffer: any, fileName: string) {
-    const data: Blob = new Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    });
-    const url = window.URL.createObjectURL(data);
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+  ngOnDestroy(): void {
+    if (this.currentPageSubscription) {
+      this.currentPageSubscription.unsubscribe();
+    }
   }
 }

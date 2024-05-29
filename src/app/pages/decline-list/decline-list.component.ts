@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment.development';
 import { DatePipe } from '@angular/common';
 import { IDeclineList } from 'src/app/interfaces/types';
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-decline-list',
@@ -28,7 +29,6 @@ export class DeclineListComponent implements OnInit {
 
   dataFromModal: string = '';
 
-  // Verileri HeaderComponent içine aktarmak için output tanımlayın
   @Output() tableDataEvent: EventEmitter<IDeclineList[]> = new EventEmitter<
     IDeclineList[]
   >();
@@ -38,6 +38,7 @@ export class DeclineListComponent implements OnInit {
     private http: HttpClient,
     private datePipe: DatePipe,
     private router: Router,
+    private sharedService: SharedService,
   ) {
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);
@@ -46,6 +47,7 @@ export class DeclineListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTableData();
+    this.sharedService.setCurrentPage('LIST');
   }
 
   // http://retail-decline-info.unibank.lan/api/decline/decline-count?page=0&size=10&date=2024-03-05&last=5&type=0
@@ -75,6 +77,13 @@ export class DeclineListComponent implements OnInit {
       url += '&count=' + count;
     }
 
+    console.log('Request URL:', url);
+
+    this.router.navigate([], {
+      queryParams: { type, last, date: azeDate }, //, count, pageNumber, pageSize
+      queryParamsHandling: 'merge',
+    });
+
     this.http.get<any>(url).subscribe((data) => {
       console.log('Response:', data);
 
@@ -84,14 +93,13 @@ export class DeclineListComponent implements OnInit {
     });
   }
 
-  selectChangeValue(value: string) {
+  selectChangeValue(selectedValue: string) {
     this.getTableData(
       this.selectedCol.value,
       this.selectedTime,
       this.selectedDate,
     );
   }
-
   onDateChange(selectedDate: Date) {
     this.getTableData(
       this.selectedCol.value,
@@ -156,7 +164,23 @@ export class DeclineListComponent implements OnInit {
   }
 
   redirectToDetails(merchantName: string) {
-    this.router.navigate(['/decline', merchantName]);
-    console.log('Redirecting to details for merchant:', merchantName);
+    const queryParams = {
+      type: this.selectedCol.value,
+      last: this.selectedTime,
+      date: this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd'),
+      // pageNumber: this.p,
+      // pageSize: this.itemsPerPage,
+      // count: this.selectedCount.value,
+      typeName: merchantName,
+    };
+
+    const urlTree = this.router.createUrlTree(['/decline', merchantName], {
+      queryParams,
+    });
+
+    const url = urlTree.toString();
+    console.log('Redirect URL:', url);
+
+    this.router.navigateByUrl(url);
   }
 }
