@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
 import * as XLSX from 'xlsx';
 @Injectable({
   providedIn: 'root',
@@ -32,10 +31,8 @@ export class SharedService {
     reader.onload = (e: any) => {
       const dataArray = new Uint8Array(e.target.result);
       const wb = XLSX.read(dataArray, { type: 'array' });
-      console.log('Workbook read');
       const ws = wb.Sheets[wb.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(ws);
-      console.log('JSON data processed', jsonData);
       this.currentPage$.subscribe((pageInfo) => {
         this.processJsonData(jsonData, pageInfo.pageType);
       });
@@ -44,15 +41,12 @@ export class SharedService {
   }
   processJsonData(jsonData: any, pageType: string) {
     if (jsonData.length === 0) {
-      console.error('No data found in JSON.');
       return;
     }
 
     let formattedData;
 
     if (pageType === 'DETAIL') {
-      console.log(jsonData);
-
       formattedData = jsonData.map((item: any) => {
         return {
           'FULL Name': item['Full Name'],
@@ -63,7 +57,7 @@ export class SharedService {
           TransactionId: item['TransactionId'],
           Amount: item['Amount'],
           'Expired Date': item['Expired Date'],
-          // '3D': item['Telephone'],
+          '3D': item['3D'],
           'Fin Code': item['Fin Code'],
           'Operation Time': item['Operation Time'],
           Currency: item['Currency'],
@@ -88,14 +82,6 @@ export class SharedService {
       });
     }
 
-    // const formattedData = jsonData.map((item: any) => {
-    //   return {
-    //     'Top Number': item['Top Number'],
-    //     'Merchant Name': item['Merchant Name'],
-    //     Count: item['Count'],
-    //   };
-    // });
-
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
@@ -106,7 +92,6 @@ export class SharedService {
     this.saveExcelFile(excelBuffer, 'data.xlsx');
   }
   saveExcelFile(buffer: any, fileName: string) {
-    console.log('Saving file:', fileName);
     const data: Blob = new Blob([buffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });

@@ -158,13 +158,13 @@ export const COLUMNS = [
   },
   {
     key: 'dpanWalletRid',
-    label: 'Dpan Wallet Rid',
+    label: 'Wallet Type',
     display: false,
     checked: false,
   },
   {
     key: 'tds',
-    label: 'Tds',
+    label: '3D',
     display: false,
     checked: false,
   },
