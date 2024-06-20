@@ -32,7 +32,6 @@ import { KeysPipe } from './keys.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { LoaderComponent } from './shared/loader/loader.component';
-import { ContentWrapperComponent } from './shared/content-wrapper/content-wrapper.component';
 
 export const MY_DATE_FORMATS: MatDateFormats = {
   parse: {
@@ -54,7 +53,6 @@ export const MY_DATE_FORMATS: MatDateFormats = {
     HeaderComponent,
     KeysPipe,
     LoaderComponent,
-    ContentWrapperComponent,
   ],
   imports: [
     BrowserModule,

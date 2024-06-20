@@ -51,7 +51,6 @@ export class DeclineListComponent implements OnInit {
     this.sharedService.setCurrentPage('LIST');
   }
 
-  // http://retail-decline-info.unibank.lan/api/decline/decline-count?page=0&size=10&date=2024-03-05&last=5&type=0
   getTableData(
     type: string = '0',
     last: string = this.selectedTime,
