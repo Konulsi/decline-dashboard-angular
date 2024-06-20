@@ -85,6 +85,24 @@ export class SharedService {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    const columnWidths: number[] = [];
+    formattedData.forEach((row: any) => {
+      Object.keys(row).forEach((key) => {
+        const columnIndex = XLSX.utils.decode_col(key);
+        const cellLength = String(row[key]).length;
+        if (
+          !columnWidths[columnIndex] ||
+          cellLength > columnWidths[columnIndex]
+        ) {
+          columnWidths[columnIndex] = cellLength;
+        }
+      });
+    });
+
+    // Her sütun için maksimum uzunluğu genişlik olarak ayarla
+    ws['!cols'] = columnWidths.map((width) => ({ wch: width }));
+
     const excelBuffer: any = XLSX.write(wb, {
       bookType: 'xlsx',
       type: 'array',

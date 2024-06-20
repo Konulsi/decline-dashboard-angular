@@ -1,116 +1,124 @@
-<div class="wrapper">
-  <div class="title_main">
-    <h2 class="mt-5">Decline Dashboard</h2>
-  </div>
-  <div class="date-select-pagination">
-    <div className="date-time d-flex align-items-center position-relative">
-      <div class="date_select">
-        <mat-form-field>
-          <mat-label class="label-float">Form date</mat-label>
-          <mat-select
-            [(value)]="selectedTime"
-            (selectionChange)="selectChangeValue(selectedTime)"
-          >
-            <mat-option value="5">5 minutes</mat-option>
-            <mat-option value="15">15 minutes</mat-option>
-            <mat-option value="30">30 minutes</mat-option>
-            <mat-option value="60">1 hours</mat-option>
-            <mat-option value="180">3 hours</mat-option>
-            <mat-option value="360">6 hours</mat-option>
-            <mat-option value="720">12 hours</mat-option>
-            <mat-option value="1440">24 hours</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="col-xs-12 col-12 col-md-4 form-group mb-3 date_time">
-          <mat-form-field class="example-form-field">
-            <mat-label>Date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="datepicker"
-              [(ngModel)]="selectedDate"
-              (dateChange)="onDateChange($event.value)"
-            />
-            <mat-datepicker-toggle
-              matIconSuffix
-              [for]="datepicker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #datepicker> </mat-datepicker>
-          </mat-form-field>
+<content-wrapper>
+  <ng-container *ngIf="loading; else contentTemplateRef">
+    <app-loader></app-loader>
+  </ng-container>
+
+  <ng-template #contentTemplateRef>
+    <div class="wrapper">
+      <div class="title_main">
+        <h2 class="mt-5">Decline Dashboard</h2>
+      </div>
+      <div class="date-select-pagination">
+        <div className="date-time d-flex align-items-center position-relative">
+          <div class="date_select">
+            <mat-form-field>
+              <mat-label class="label-float">Form date</mat-label>
+              <mat-select
+                [(value)]="selectedTime"
+                (selectionChange)="selectChangeValue(selectedTime)"
+              >
+                <mat-option value="5">5 minutes</mat-option>
+                <mat-option value="15">15 minutes</mat-option>
+                <mat-option value="30">30 minutes</mat-option>
+                <mat-option value="60">1 hours</mat-option>
+                <mat-option value="180">3 hours</mat-option>
+                <mat-option value="360">6 hours</mat-option>
+                <mat-option value="720">12 hours</mat-option>
+                <mat-option value="1440">24 hours</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="col-xs-12 col-12 col-md-4 form-group mb-3 date_time">
+              <mat-form-field class="example-form-field">
+                <mat-label>Date</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="datepicker"
+                  [(ngModel)]="selectedDate"
+                  (dateChange)="onDateChange($event.value)"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="datepicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #datepicker> </mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-controls">
+          <pagination-controls
+            (pageChange)="onPageChange($event)"
+            previousLabel=""
+            nextLabel=""
+          ></pagination-controls>
+
+          <div class="mat-select-container">
+            <mat-form-field class="pageSize-select">
+              <mat-label *ngIf="itemsPerPage === 10">10 / page</mat-label>
+              <mat-label *ngIf="itemsPerPage === 20">20 / page</mat-label>
+              <mat-label *ngIf="itemsPerPage === 30">30 / page</mat-label>
+              <mat-label *ngIf="itemsPerPage === 50">50 / page</mat-label>
+              <mat-label *ngIf="itemsPerPage === 100">100 / page</mat-label>
+
+              <mat-select
+                [(value)]="itemsPerPage"
+                (selectionChange)="updateTableData($event.value)"
+              >
+                <mat-option value="10">10 / page</mat-option>
+                <mat-option value="20">20 / page</mat-option>
+                <mat-option value="30">30 / page</mat-option>
+                <mat-option value="50">50 / page</mat-option>
+                <mat-option value="100">100 / page</mat-option>
+                <button
+                  style="margin-left: 10px"
+                  mat-button
+                  (click)="showAllItems()"
+                >
+                  All item
+                </button>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- <button mat-button (click)="showAllItems()">All item</button> -->
         </div>
       </div>
-    </div>
-    <div class="pagination-controls">
-      <pagination-controls
-        (pageChange)="onPageChange($event)"
-        previousLabel=""
-        nextLabel=""
-      ></pagination-controls>
-
-      <div class="mat-select-container">
-        <mat-form-field class="pageSize-select">
-          <mat-label *ngIf="itemsPerPage === 10">10 / page</mat-label>
-          <mat-label *ngIf="itemsPerPage === 20">20 / page</mat-label>
-          <mat-label *ngIf="itemsPerPage === 30">30 / page</mat-label>
-          <mat-label *ngIf="itemsPerPage === 50">50 / page</mat-label>
-          <mat-label *ngIf="itemsPerPage === 100">100 / page</mat-label>
-
-          <mat-select
-            [(value)]="itemsPerPage"
-            (selectionChange)="updateTableData($event.value)"
-          >
-            <mat-option value="10">10 / page</mat-option>
-            <mat-option value="20">20 / page</mat-option>
-            <mat-option value="30">30 / page</mat-option>
-            <mat-option value="50">50 / page</mat-option>
-            <mat-option value="100">100 / page</mat-option>
-            <button
-              style="margin-left: 10px"
-              mat-button
-              (click)="showAllItems()"
+      <div class="table-wrapper">
+        <table class="table mt-4">
+          <thead>
+            <tr>
+              <th scope="col">Top Number</th>
+              <th scope="col">
+                {{ selectedCol.label }}
+                <img
+                  class="filterIcon"
+                  src="/assets/icons/arrow-down.svg"
+                  alt=""
+                  (click)="openModal(selectedCol.value)"
+                />
+              </th>
+              <th scope="col">Count</th>
+            </tr>
+          </thead>
+          <tbody class="table-rows">
+            <tr
+              *ngFor="
+                let data of tableData
+                  | paginate: { itemsPerPage: 10, currentPage: p, totalItems }
+              "
             >
-              All item
-            </button>
-          </mat-select>
-        </mat-form-field>
+              <td>
+                {{ data.number }}
+              </td>
+              <td (click)="redirectToDetails(data.type)">
+                {{ data.type }}
+              </td>
+              <td>
+                {{ data.count }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <!-- <button mat-button (click)="showAllItems()">All item</button> -->
     </div>
-  </div>
-  <div class="table-wrapper">
-    <table class="table mt-4">
-      <thead>
-        <tr>
-          <th scope="col">Top Number</th>
-          <th scope="col">
-            {{ selectedCol.label }}
-            <img
-              class="filterIcon"
-              src="/assets/icons/arrow-down.svg"
-              alt=""
-              (click)="openModal(selectedCol.value)"
-            />
-          </th>
-          <th scope="col">Count</th>
-        </tr>
-      </thead>
-      <tbody class="table-rows">
-        <tr
-          *ngFor="
-            let data of tableData
-              | paginate: { itemsPerPage: 10, currentPage: p, totalItems }
-          "
-        >
-          <td>
-            {{ data.number }}
-          </td>
-          <td (click)="redirectToDetails(data.type)">
-            {{ data.type }}
-          </td>
-          <td>
-            {{ data.count }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+  </ng-template>
+</content-wrapper>

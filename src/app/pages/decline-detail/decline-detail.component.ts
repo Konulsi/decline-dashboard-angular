@@ -16,6 +16,7 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./decline-detail.component.scss'],
 })
 export class DeclineDetailComponent implements OnInit, OnDestroy {
+  loading = false;
   datepicker = new Date();
   selectedTime = '5';
   selectedDate = new Date();
@@ -93,8 +94,8 @@ export class DeclineDetailComponent implements OnInit, OnDestroy {
     pageNumber: number = this.p,
     pageSize: number = this.itemsPerPage,
   ) {
+    this.loading = true;
     const azDate = this.datePipe.transform(date, 'yyyy-MM-dd');
-    //retail-decline-info.unibank.lan/api/decline/by?page=0&size=10&date=2024-04-24&last=5&type=0&typeName=EMBAFINANS
 
     let url =
       environment.apiUrl +
@@ -116,6 +117,7 @@ export class DeclineDetailComponent implements OnInit, OnDestroy {
 
     this.http.get<any>(url).subscribe({
       next: (data) => {
+        this.loading = false;
         this.tableData = data.content;
         this.totalItems = data.totalElements;
       },

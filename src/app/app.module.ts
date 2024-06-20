@@ -9,19 +9,30 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
 import { MatDateFormats } from '@angular/material/core';
-import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  MatMomentDateModule,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import {
+  MatNativeDateModule,
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatDialogModule } from '@angular/material/dialog';
 import { KeysPipe } from './keys.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { LoaderComponent } from './shared/loader/loader.component';
+import { ContentWrapperComponent } from './shared/content-wrapper/content-wrapper.component';
 
 export const MY_DATE_FORMATS: MatDateFormats = {
   parse: {
@@ -42,6 +53,8 @@ export const MY_DATE_FORMATS: MatDateFormats = {
     DeclineDetailComponent,
     HeaderComponent,
     KeysPipe,
+    LoaderComponent,
+    ContentWrapperComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,8 +74,19 @@ export const MY_DATE_FORMATS: MatDateFormats = {
     NgxPaginationModule,
     MatDialogModule,
     MatButtonModule,
+    MatMomentDateModule,
+    MatNativeDateModule,
   ],
-  providers: [provideMomentDateAdapter(MY_DATE_FORMATS), DatePipe],
+  // providers: [provideMomentDateAdapter(MY_DATE_FORMATS), DatePipe],
+  providers: [
+    DatePipe,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

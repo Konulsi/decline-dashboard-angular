@@ -14,6 +14,7 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./decline-list.component.scss'],
 })
 export class DeclineListComponent implements OnInit {
+  loading = false;
   datepicker = new Date();
   selectedTime: string = '5';
   selectedDate = new Date();
@@ -59,6 +60,7 @@ export class DeclineListComponent implements OnInit {
     pageNumber: number = this.p,
     pageSize: number = this.itemsPerPage,
   ) {
+    this.loading = true;
     const azeDate = this.datePipe.transform(date, 'yyyy-MM-dd');
 
     let url =
@@ -86,7 +88,7 @@ export class DeclineListComponent implements OnInit {
 
     this.http.get<any>(url).subscribe((data) => {
       console.log('Response:', data);
-
+      this.loading = false;
       this.tableData = data.content;
       this.totalItems = data.totalElements;
       this.tableDataEvent.emit(data);
